@@ -24,8 +24,6 @@ class UserController extends AbstractController
             return $this->redirectToRoute('/');
         }
 
-        return $this->render('user/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+        return $this->renderForm('user/register.html.twig', ['form' => $form]);
     }
 }
