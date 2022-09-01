@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity]
 #[ORM\Table(name: '`user`')]
@@ -17,17 +19,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[NotBlank]
+    #[Length(min: 3, max: 180)]
     #[ORM\Column(length: 180, unique: true)]
     private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
+    #[NotBlank]
+    #[Length(min: 6, max: 255)]
     #[ORM\Column]
-    private ?string $password = null;
+    private ?string $password;
 
     public function getId(): ?int
     {

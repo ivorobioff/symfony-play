@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
+use App\Model\UserPayload;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -39,8 +40,9 @@ class UserService implements UserProviderInterface, PasswordUpgraderInterface
         $this->entityManager->flush();
     }
 
-    public function register(User $user, string $plainPassword): void {
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
+    public function register(User $user): void {
+
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
 
         $user->setPassword($hashedPassword);
 

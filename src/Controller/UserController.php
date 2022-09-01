@@ -16,11 +16,12 @@ class UserController extends AbstractController
     public function register(Request $request, UserService $userService): Response
     {
         $user = new User();
+
         $form = $this->createForm(RegistrationForm::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $userService->register($user, $form->get('password')->getData());
+            $userService->register($user);
             return $this->redirectToRoute('/');
         }
 
