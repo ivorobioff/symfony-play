@@ -15,7 +15,8 @@ class RegistrationForm extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('password', PasswordType::class, [
+            ->add('plainPassword', PasswordType::class, [
+                'label' => 'Password',
                 'attr' => ['autocomplete' => 'new-password']
             ])
             ->add('Done', SubmitType::class)

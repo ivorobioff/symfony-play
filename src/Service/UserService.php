@@ -42,7 +42,7 @@ class UserService implements UserProviderInterface, PasswordUpgraderInterface
 
     public function register(User $user): void {
 
-        $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
+        $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPlainPassword());
 
         $user->setPassword($hashedPassword);
 

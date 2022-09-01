@@ -27,10 +27,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private array $roles = [];
 
-    #[NotBlank]
-    #[Length(min: 6, max: 255)]
     #[ORM\Column]
     private ?string $password;
+
+    #[NotBlank]
+    #[Length(min: 6, max: 255)]
+    private string $plainPassword;
 
     public function getId(): ?int
     {
@@ -91,6 +93,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlainPassword(): string
+    {
+        return $this->plainPassword;
     }
 
     /**
