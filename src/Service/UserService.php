@@ -6,10 +6,13 @@ use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class UserService implements PasswordUpgraderInterface
+class UserService implements UserProviderInterface, PasswordUpgraderInterface
 {
     private EntityManagerInterface $entityManager;
     private UserPasswordHasherInterface $passwordHasher;
@@ -43,5 +46,35 @@ class UserService implements PasswordUpgraderInterface
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+    }
+
+    public function refreshUser(UserInterface $user): UserInterface
+    {
+        return $this->findByUsername($user->getUserIdentifier());
+    }
+
+    public function supportsClass(string $class): bool
+    {
+        return $class === User::class;
+    }
+
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        $user = $this->findByUsername($identifier);
+
+        if ($user === null) {
+            $e = new UserNotFoundException(sprintf('User "%s" not found.', $identifier));
+            $e->setUserIdentifier($identifier);
+
+            throw $e;
+        }
+
+        return $user;
+    }
+
+    private function findByUsername(string $username): ?User {
+        $userRepository = $this->entityManager->getRepository(User::class);
+
+        return $userRepository->findOneBy(['username' => $username]);
     }
 }
