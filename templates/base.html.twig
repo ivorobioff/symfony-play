@@ -14,6 +14,11 @@
         {% endblock %}
     </head>
     <body>
+        {% if (is_granted('IS_AUTHENTICATED_FULLY')) %}
+            <div>
+                <a href="{{ path('auth_logout') }}">Sing-out</a>
+            </div>
+        {% endif %}
         {% block body %}{% endblock %}
     </body>
 </html>

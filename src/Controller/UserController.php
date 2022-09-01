@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/sign-up')]
+    #[Route('/sign-up', name: 'user_register')]
     public function register(Request $request, UserService $userService): Response
     {
         $user = new User();
@@ -22,7 +22,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $userService->register($user);
-            return $this->redirectToRoute('/');
+            return $this->redirectToRoute('auth_login');
         }
 
         return $this->renderForm('user/register.html.twig', ['form' => $form]);

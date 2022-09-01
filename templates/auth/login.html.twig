@@ -3,19 +3,22 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
+    <h1>Sign-In</h1>
+
     {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div>{{ error.messageKey }}</div>
     {% endif %}
 
     <form action="{{ path('auth_login') }}" method="post">
-        <label for="username">Email:</label>
+        <label for="username">Username</label>
         <input type="text" id="username" name="_username" value="{{ last_username }}"/>
-
-        <label for="password">Password:</label>
+        <br />
+        <label for="password">Password</label>
         <input type="password" id="password" name="_password"/>
-        
+        <br />
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
         <button type="submit">login</button>
     </form>
+    <br>
+    Don't have an account? <a href="{{ path('user_register') }}">Sign-Up</a>
 {% endblock %}
