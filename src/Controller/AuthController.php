@@ -9,7 +9,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class AuthController extends AbstractController
 {
-    #[Route('/login', name: 'auth_login', methods: ['GET', 'POST'])]
+    #[Route('/sign-in', name: 'auth_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         return $this->render('auth/login.html.twig', [
@@ -18,7 +18,7 @@ class AuthController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'auth_logout', methods: ['GET'])]
+    #[Route('/sign-out', name: 'auth_logout', methods: ['GET'])]
     public function logout(): Response {
         throw new \RuntimeException('Don\'t forget to activate logout in security.yaml');
     }
