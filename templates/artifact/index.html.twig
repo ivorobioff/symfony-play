@@ -3,7 +3,11 @@
 {% block title %}Artifacts{% endblock %}
 
 {% block body %}
-    <div>
-        <a href="{{ path('artifact_create') }}">Create New Artifact</a>
-    </div>
+
+    {% for artifact in artifacts %}
+        <a href="{{ path('artifact_view', { 'id': artifact.id}) }}">{{ artifact.content|u.truncate(20, '...') }}</a> - {{ artifact.createdAt|date('Y-m-d H:m') }}
+        <br>
+    {% endfor %}
+    <hr>
+    <a href="{{ path('artifact_create') }}">Create New Artifact</a>
 {% endblock %}

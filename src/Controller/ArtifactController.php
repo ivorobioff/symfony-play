@@ -21,7 +21,7 @@ class ArtifactController extends AbstractController
 
     #[Route(['/artifacts', '/'], name: 'artifact_index', methods: 'GET')]
     public function index(): Response {
-        return $this->render('artifact/index.html.twig', []);
+        return $this->render('artifact/index.html.twig', ['artifacts' => $this->artifactService->getAll()]);
     }
 
     #[Route(['/artifacts/create'], name: 'artifact_create', methods: ['POST', 'GET'])]

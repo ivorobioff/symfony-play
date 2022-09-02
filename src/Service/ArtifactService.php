@@ -3,32 +3,33 @@
 namespace App\Service;
 
 use App\Entity\Artifact;
-use App\Entity\User;
+use App\Helper\CurrentProvider;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Security;
 
 class ArtifactService
 {
     private EntityManagerInterface $entityManager;
-    private Security $security;
+    private CurrentProvider $current;
 
-    public function __construct(EntityManagerInterface $entityManager, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, CurrentProvider $current)
     {
         $this->entityManager = $entityManager;
-        $this->security = $security;
+        $this->current = $current;
+    }
+
+    /**
+     * @return Artifact[]
+     */
+    public function getAll(): array {
+        $artifactRepository = $this->entityManager->getRepository(Artifact::class);
+
+        return $artifactRepository->findBy(['createdBy' => $this->current->getUser()]);
     }
 
     public function create(Artifact $artifact): Artifact
     {
-        $user = $this->security->getUser();
-
-        if (!$user instanceof User) {
-            throw new \RuntimeException('User must be instance of ' . User::class);
-        }
-
         $artifact->setCreatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
-
-        $artifact->setCreatedBy($user);
+        $artifact->setCreatedBy($this->current->getUser());
 
         $this->entityManager->persist($artifact);
         $this->entityManager->flush();
@@ -37,6 +38,10 @@ class ArtifactService
     }
 
     public function get(int $id): ?Artifact {
-        return $this->entityManager->find(Artifact::class, $id);
+        $artifactRepository = $this->entityManager->getRepository(Artifact::class);
+
+        return $artifactRepository->findOneBy([
+            'id' => $id, 'createdBy' => $this->current->getUser()
+        ]);
     }
 }
