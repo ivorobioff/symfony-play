@@ -12,7 +12,6 @@
         <li>Created By: {{ artifact.createdBy.username }}</li>
     </ul>
     <hr>
-    <div>
-        <a href="{{ path('artifact_create') }}">Create Another Artifact</a>
-    </div>
+    <a href="{{ path('artifact_index') }}">View All Artifacts</a> |
+    <a href="{{ path('artifact_create') }}">Create Another Artifact</a>
 {% endblock %}
