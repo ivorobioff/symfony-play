@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artifacts{% endblock %}
+
+{% block body %}
+    <p>
+        {{ artifact.content }}
+    </p>
+    <hr>
+    <ul>
+        <li>Created At: {{ artifact.createdAt|date('Y-m-d H:m') }}</li>
+        <li>Created By: {{ artifact.createdBy.username }}</li>
+    </ul>
+    <hr>
+    <div>
+        <a href="{{ path('artifact_create') }}">Create Another Artifact</a>
+    </div>
+{% endblock %}
